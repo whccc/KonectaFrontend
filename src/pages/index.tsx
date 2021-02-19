@@ -1,13 +1,19 @@
 import React from 'react'
-import Head from 'next/head'
+import { CPNavbar } from '../components/NavBar'
+import { Container, ContainerPots } from '../styles/PageHomeStyle'
+import { CPCardPost } from '../components/CardPost'
 export default function Home(): JSX.Element {
   return (
-    <div>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <h1>Hola</h1>
-    </div>
+    <Container>
+      <CPNavbar />
+      <h1>Publicaciones</h1>
+      <ContainerPots>
+        <CPCardPost />
+        <CPCardPost />
+        <CPCardPost />
+        <CPCardPost />
+        <CPCardPost />
+      </ContainerPots>
+    </Container>
   )
 }
