@@ -47,6 +47,7 @@ export const ContainerNav = styled.div`
     border: 1px solid #eee;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     & a {
       padding-top: 10px;
       padding-bottom: 10px;
