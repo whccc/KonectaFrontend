@@ -18,3 +18,12 @@ export const Button = styled.button`
     border: 2px solid ${props => props.theme.colors.secundary};
   }
 `
+export const AlertMessage = styled.div`
+  background-color: ${props =>
+    props.Type === 'Error' ? props.theme.colors.secundary : 'green'};
+  margin: 5px;
+  padding: 5px;
+  color: #fff;
+  text-align: center;
+  display: ${props => (props.display ? 'block' : 'none')};
+`
