@@ -9,6 +9,7 @@ interface IUserData {
 const useLocalStorage = (): {
   HookGetDataSession: () => IUserData
   HookCreateSession: (DataSession: any) => void
+  HookDeleteDataSession: () => void
 } => {
   // ----------------------
   // Create Local Storage
@@ -22,7 +23,13 @@ const useLocalStorage = (): {
   const HookGetDataSession = () => {
     return JSON.parse(localStorage.getItem('BlogKonecta'))
   }
-  return { HookCreateSession, HookGetDataSession }
+  // ----------------
+  // ELIMINAR SESSIÓN
+  // ----------------
+  const HookDeleteDataSession = () => {
+    localStorage.removeItem('BlogKonecta')
+  }
+  return { HookCreateSession, HookGetDataSession, HookDeleteDataSession }
 }
 
 export default useLocalStorage

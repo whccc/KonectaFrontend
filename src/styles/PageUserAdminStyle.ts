@@ -20,7 +20,6 @@ export const ContainerUsers = styled.section`
 export const Container = styled.section`
   h2 {
     text-align: center;
-    padding: 10px;
   }
 `
 

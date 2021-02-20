@@ -21,11 +21,12 @@ const useUser = (): {
   HookGetUserAsync: ({ _id: string }) => void
   HookUpdateUserAsync: (FormData: any) => Promise<boolean>
   HookDeleteUserAsync: ({ _id: string }) => Promise<boolean>
+  HookCloseSession: () => void
   JsonDataUsers: any
   JsonDataUser: any
 } => {
   // HOOKS
-  const { HookCreateSession } = useLocalStorage()
+  const { HookCreateSession, HookDeleteDataSession } = useLocalStorage()
   const router = useRouter()
 
   const [JsonDataUsers, setJsonDataUsers] = useState([])
@@ -97,7 +98,7 @@ const useUser = (): {
     }
   }
   // ---------------
-  // CREAR USUARIO
+  // UPDATE USUARIO
   // ---------------
   const HookUpdateUserAsync = async (DataForm: any) => {
     try {
@@ -120,6 +121,13 @@ const useUser = (): {
       return null
     }
   }
+  // ----------------
+  // CERRAR SESSIÓN
+  // ----------------
+  const HookCloseSession = () => {
+    HookDeleteDataSession()
+    router.push('/Login')
+  }
   return {
     HookCreateUserAsync,
     HookValidateEmailUserAsync,
@@ -128,6 +136,7 @@ const useUser = (): {
     HookGetUserAsync,
     HookUpdateUserAsync,
     HookDeleteUserAsync,
+    HookCloseSession,
     JsonDataUsers,
     JsonDataUser
   }

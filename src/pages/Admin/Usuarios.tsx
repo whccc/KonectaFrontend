@@ -10,6 +10,9 @@ import {
   Button
 } from '../../styles/PageUserAdminStyle'
 import useUser from '../../hooks/useUser'
+import useLocalStorage from '../../hooks/useLocalStorage'
+import { useRouter } from 'next/router'
+
 const PageAdmin = (): JSX.Element => {
   const [showModal, setShowModal] = useState(false)
   const [showModalEdit, setShowModalEdit] = useState(false)
@@ -23,12 +26,30 @@ const PageAdmin = (): JSX.Element => {
     JsonDataUsers,
     JsonDataUser
   } = useUser()
+  const { HookGetDataSession } = useLocalStorage()
+  const router = useRouter()
+
   useEffect(() => {
     const InitialDataAsync = async () => {
       await HookGetUsersAsync()
     }
     InitialDataAsync()
   }, [])
+
+  // VALIDAR RUTA
+  if (typeof window !== 'undefined') {
+    const DataUser = HookGetDataSession()
+    if (DataUser === null) {
+      router.push('/Login')
+      return null
+    } else {
+      if (DataUser.strTypeUser === 'user') {
+        router.push('/')
+        return null
+      }
+    }
+  }
+
   return (
     <Container>
       <CPNavbarAdmin />

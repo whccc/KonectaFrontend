@@ -8,9 +8,18 @@ export const Container = styled.ul`
   h3 {
     color: ${props => props.theme.colors.secundary};
     text-decoration: underline;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
   }
   & img {
     width: 100px;
+  }
+  @media (min-width: 1000px) {
+    & img {
+      height: 200px;
+    }
   }
   & p {
     font-size: 13px;

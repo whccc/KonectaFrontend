@@ -19,6 +19,7 @@ export const ContainerUser = styled.div`
     font-size: 35px;
     margin-left: 5px;
     color: ${props => props.theme.colors.secundary} !important;
+    cursor: pointer;
   }
 `
 export const ContainerTitle = styled.div`
@@ -29,6 +30,12 @@ export const ContainerTitle = styled.div`
   align-items: center;
   & h2 {
     color: ${props => props.theme.colors.secundary};
+    width: 50%;
+  }
+  @media (min-width: 1000px) {
+    & h2 {
+      text-align: left !important;
+    }
   }
 `
 

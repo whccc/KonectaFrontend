@@ -19,6 +19,7 @@ export const ContainerUser = styled.div`
     font-size: 35px;
     margin-left: 5px;
     color: ${props => props.theme.colors.secundary} !important;
+    cursor: pointer;
   }
 `
 export const ContainerTitle = styled.div`
@@ -29,6 +30,7 @@ export const ContainerTitle = styled.div`
   align-items: center;
   & h2 {
     color: ${props => props.theme.colors.secundary};
+    width: 50%;
   }
 `
 
@@ -38,6 +40,8 @@ export const ContainerNav = styled.div`
     padding: 0;
     margin: auto;
     border: 1px solid #eee;
+    display: flex;
+    flex-direction: row;
     & a {
       padding-top: 10px;
       padding-bottom: 10px;

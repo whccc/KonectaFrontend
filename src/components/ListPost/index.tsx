@@ -1,20 +1,29 @@
 import React from 'react'
 import { Container } from './style'
-export const CPListPost = (): JSX.Element => {
+import Link from 'next/link'
+export const CPListPost: React.FC<{
+  strTitle: string
+  _id: string
+  strTextSmall: string
+  blobImg: any
+}> = ({ strTitle, _id, blobImg, strTextSmall }): JSX.Element => {
   return (
     <Container>
       <li>
         <div>
-          <img src="/Cartagena.jpg" />
+          <img src={blobImg} />
         </div>
         <div>
-          <h3>Post1</h3>
-          <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Possimus
-            numquam repudiandae recusandae magni asperiores enim odit, esse
-            omnis totam voluptatem ratione cum voluptatibus molestiae rem
-            voluptates! Dolor quam odit eos?
-          </p>
+          <Link
+            as={`/BlogPost/${strTitle.replaceAll(' ', '-')}`}
+            href={{
+              pathname: `/BlogPost/${strTitle.replaceAll(' ', '-')}`,
+              query: { CodeId: _id }
+            }}
+          >
+            <h3>{strTitle}</h3>
+          </Link>
+          <p>{strTextSmall}</p>
         </div>
       </li>
     </Container>

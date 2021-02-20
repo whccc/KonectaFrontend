@@ -1,6 +1,9 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
+import Accordion from 'react-bootstrap/Accordion'
+import { CPPersonCommentsPost } from '../../components/PersonCommentsPost'
+import Card from 'react-bootstrap/Card'
 import {
   Container,
   ContainerImg,
@@ -10,14 +13,26 @@ import {
 } from './styles'
 export const CPModalBlog: React.FC<{
   ShowModal: boolean
-  CloseModal: () => void
+  onShowModal: () => void
+  strTypeModal: string
+  JsonDataBlogPost: any
   HookCreatePostAsync: (FormData: any) => Promise<boolean>
-}> = ({ ShowModal, CloseModal, HookCreatePostAsync }) => {
+  HookUpdateBlogPostAsync: (FormData: any) => Promise<boolean>
+}> = ({
+  ShowModal,
+  onShowModal,
+  HookCreatePostAsync,
+  JsonDataBlogPost,
+  strTypeModal,
+  HookUpdateBlogPostAsync
+}) => {
+  const [strId, setId] = useState('')
   const [blobImg, setBlobImg] = useState<any>(null)
   const [strTitle, setStrTitle] = useState('')
   const [strIdCategory, setStrIdCategory] = useState('DP')
   const [strTextSmall, setStrTextSmall] = useState('')
   const [strTextLarge, setStrTextLarge] = useState('')
+  const [ArrayComments, setArrayComments] = useState([])
   const [JsonMessage, setJsonMessage] = useState({
     display: false,
     text: '',
@@ -27,6 +42,23 @@ export const CPModalBlog: React.FC<{
   const strTitleRef = useRef(null)
   const strTextSmallRef = useRef(null)
   const strTextLargeRef = useRef(null)
+
+  useEffect(() => {
+    const InitialDataEditAsync = async () => {
+      if (strTypeModal !== 'PublicPost') {
+        setId(JsonDataBlogPost._id)
+        setStrTitle(JsonDataBlogPost.strTitle)
+        setBlobImg(JsonDataBlogPost.blobImg)
+        setStrIdCategory(JsonDataBlogPost.strIdCategory)
+        setStrTextSmall(JsonDataBlogPost.strTextSmall)
+        setStrTextLarge(JsonDataBlogPost.strTextLarge)
+        setArrayComments(JsonDataBlogPost.ArrayComments)
+        onShowModal()
+      }
+    }
+    InitialDataEditAsync()
+  }, [JsonDataBlogPost])
+
   // -----------
   // CARGAR IMG
   // ----------
@@ -61,7 +93,34 @@ export const CPModalBlog: React.FC<{
       })
       setTimeout(() => {
         ClearData()
-        CloseModal()
+        onShowModal()
+      }, 1000)
+    }
+  }
+  // -----------------
+  // UPDATE BLOG POST
+  // -----------------
+  const UpdateBlogPostAsync = async () => {
+    if (!ValidateDate()) {
+      return
+    }
+    const FormData = {
+      _id: strId,
+      strTitle,
+      strIdCategory,
+      strTextSmall,
+      strTextLarge,
+      blobImg
+    }
+    const Result = await HookUpdateBlogPostAsync(FormData)
+    if (Result) {
+      setJsonMessage({
+        display: true,
+        text: 'Editado con éxito.',
+        Type: 'Success'
+      })
+      setTimeout(() => {
+        ClearData()
       }, 1000)
     }
   }
@@ -119,17 +178,23 @@ export const CPModalBlog: React.FC<{
       text: '',
       Type: ''
     })
+    onShowModal()
   }
   return (
-    <Modal size="lg" show={ShowModal} onHide={CloseModal}>
+    <Modal size="lg" show={ShowModal} onHide={ClearData}>
       <Modal.Header closeButton>
-        <Modal.Title>Crear post</Modal.Title>
+        <Modal.Title>
+          {strTypeModal === 'PublicPost' ? 'Crear post' : 'Editar Post'}
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Container>
           <ContainerImg>
             <img src={blobImg === null ? '/Img.png' : blobImg} />
-            <input type="file" onChange={AddImg} />
+            <small style={{ display: 'inline-block', color: 'red' }}>
+              * Cargar imagen máximo de 1 mb *
+            </small>
+            <input type="file" onChange={AddImg} accept="image/*" />
           </ContainerImg>
           <hr />
           <ContainerData>
@@ -174,9 +239,38 @@ export const CPModalBlog: React.FC<{
             <AlertMessage Type={JsonMessage.Type} display={JsonMessage.display}>
               {JsonMessage.text}
             </AlertMessage>
-            <Button onClick={CreatePostAsync}>Publicar Post</Button>
+            {strTypeModal === 'PublicPost' ? (
+              <Button onClick={CreatePostAsync}>Publicar Post</Button>
+            ) : (
+              <Button onClick={UpdateBlogPostAsync}>Editar Post</Button>
+            )}
           </ContainerData>
         </Container>
+        {strTypeModal !== 'PublicPost' && (
+          <Accordion style={{ marginTop: '10px' }}>
+            <Card>
+              <Card.Header>
+                <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                  Ver comentarios
+                </Accordion.Toggle>
+              </Card.Header>
+              <Accordion.Collapse eventKey="0">
+                <Card.Body>
+                  {ArrayComments.map((Comments, Index) => {
+                    return (
+                      <CPPersonCommentsPost
+                        key={Index}
+                        strNames={Comments.strNameUser}
+                        strComment={Comments.strComment}
+                        dtDateCreation={Comments.dtDateCreation}
+                      />
+                    )
+                  })}
+                </Card.Body>
+              </Accordion.Collapse>
+            </Card>
+          </Accordion>
+        )}
       </Modal.Body>
     </Modal>
   )

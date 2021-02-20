@@ -1,18 +1,31 @@
 import React from 'react'
 import Card from 'react-bootstrap/Card'
 import { Button, Container } from './styles'
-export const CPCardPost = (): JSX.Element => {
+import { useRouter } from 'next/router'
+import Link from 'next/link'
+export const CPCardPost: React.FC<{
+  _id: string
+  strTitle: string
+  strTextSmall: string
+  blobImg: string
+}> = ({ _id, strTitle, strTextSmall, blobImg }): JSX.Element => {
+  const router = useRouter()
   return (
     <Container>
       <Card>
-        <Card.Img variant="top" src="Cartagena.jpg" />
+        <Card.Img variant="top" src={blobImg} />
         <Card.Body>
-          <Card.Title>Card Title</Card.Title>
-          <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </Card.Text>
-          <Button>Ver Publicación</Button>
+          <Card.Title>{strTitle}</Card.Title>
+          <Card.Text>{strTextSmall}</Card.Text>
+          <Link
+            as={`/BlogPost/${strTitle.replaceAll(' ', '-')}`}
+            href={{
+              pathname: `/BlogPost/${strTitle.replaceAll(' ', '-')}`,
+              query: { CodeId: _id }
+            }}
+          >
+            <Button>Ver Publicación</Button>
+          </Link>
         </Card.Body>
       </Card>
     </Container>

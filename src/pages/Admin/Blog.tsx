@@ -7,16 +7,26 @@ import {
   Container,
   ContainerBlogPost
 } from '../../styles/PageBlogPostAdminStyle'
-import { CPDetailBlopPost } from '../../components/DetailBlogPostAdmin'
-import useBlog from '../../hooks/useBlogPost'
+import { CPDetailBlogPostAdmin } from '../../components/DetailBlogPostAdmin'
+import useBlogPost from '../../hooks/useBlogPost'
+import useLocalStorage from '../../hooks/useLocalStorage'
+import { useRouter } from 'next/router'
+
 const PageBlog = (): JSX.Element => {
   const [ShowModal, setShowModal] = useState(false)
   const {
     HookCreatePostAsync,
     JsonDataBlogPosts,
-    HookGetBlogPostAsync
-  } = useBlog()
+    HookGetBlogPostAsync,
+    JsonDataBlogPost,
+    HookGetBlogPostOneAsync,
+    HookUpdateBlogPostAsync,
+    HookDeleteBlogPostAsync
+  } = useBlogPost()
+  const [strTypeModal, setStrTypeModal] = useState('PublicPost')
 
+  const { HookGetDataSession } = useLocalStorage()
+  const router = useRouter()
   useEffect(() => {
     const InitialDataAsync = async () => {
       await HookGetBlogPostAsync()
@@ -24,21 +34,50 @@ const PageBlog = (): JSX.Element => {
     InitialDataAsync()
   }, [])
 
+  // VALIDAR RUTA
+  if (typeof window !== 'undefined') {
+    const DataUser = HookGetDataSession()
+    if (DataUser === null) {
+      router.push('/Login')
+      return null
+    } else {
+      if (DataUser.strTypeUser === 'user') {
+        router.push('/')
+        return null
+      }
+    }
+  }
+
   return (
     <Container>
       <CPNavbarAdmin />
       <h2>Publicaciones</h2>
       <ContainerBlogPost>
-        <CPDetailBlopPost JsonDataBlogPosts={JsonDataBlogPosts} />
+        <CPDetailBlogPostAdmin
+          JsonDataBlogPosts={JsonDataBlogPosts}
+          HookGetBlogPostOneAsync={HookGetBlogPostOneAsync}
+          onChangeTypeModalPost={() => {
+            setStrTypeModal('EditPost')
+          }}
+          HookDeleteBlogPostAsync={HookDeleteBlogPostAsync}
+        />
       </ContainerBlogPost>
       <CPModalBlog
+        strTypeModal={strTypeModal}
         ShowModal={ShowModal}
-        CloseModal={() => {
+        onShowModal={() => {
           setShowModal(!ShowModal)
         }}
         HookCreatePostAsync={HookCreatePostAsync}
+        JsonDataBlogPost={JsonDataBlogPost}
+        HookUpdateBlogPostAsync={HookUpdateBlogPostAsync}
       />
-      <Button onClick={() => setShowModal(true)}>
+      <Button
+        onClick={() => {
+          setShowModal(true)
+          setStrTypeModal('PublicPost')
+        }}
+      >
         <BsFilePost />
       </Button>
     </Container>

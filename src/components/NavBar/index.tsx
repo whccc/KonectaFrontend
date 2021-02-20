@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import {
   Container,
@@ -7,26 +7,67 @@ import {
   ContainerUser
 } from './styles'
 import { GrLogin } from 'react-icons/gr'
+import useLocalStorage from '../../hooks/useLocalStorage'
+import useUser from '../../hooks/useUser'
+import { useRouter } from 'next/router'
 export const CPNavbar = (): JSX.Element => {
+  const { HookGetDataSession } = useLocalStorage()
+  const [DataUser, setDataUser] = useState({
+    strTypeUser: '',
+    strNames: ''
+  })
+  const { HookCloseSession } = useUser()
+  const router = useRouter()
+  useEffect(() => {
+    const InitialDataAsync = async () => {
+      const Result = await HookGetDataSession()
+      setDataUser({
+        strTypeUser: Result.strTypeUser,
+        strNames: Result.strNames
+      })
+    }
+    InitialDataAsync()
+  }, [])
   return (
     <Container>
       <ContainerTitle>
-        <h2>BlogKonecta</h2>
+        <h2>
+          {DataUser.strTypeUser === ''
+            ? 'BlogKonecta'
+            : 'BlogKonecta-Administrador'}
+        </h2>
         <ContainerUser>
           <div>
             <img src="/Person.png" />
-            <GrLogin />
+            <GrLogin onClick={HookCloseSession} />
           </div>
-          <h6>Wilson Herney Castro Cabrera</h6>
+          <h6>{DataUser.strNames}</h6>
         </ContainerUser>
       </ContainerTitle>
       <ContainerNav>
         <ul>
-          <li>
+          <li
+            style={{
+              background: router.pathname === '/' && '#b53441'
+            }}
+          >
             <Link href="/">
-              <a>Blog</a>
+              <a
+                style={{
+                  color: router.pathname === '/' && '#ffff'
+                }}
+              >
+                Blog
+              </a>
             </Link>
           </li>
+          {DataUser.strTypeUser === 'admin' && (
+            <li>
+              <Link href="/Admin/Usuarios">
+                <a>Administrar blog</a>
+              </Link>
+            </li>
+          )}
         </ul>
       </ContainerNav>
     </Container>
