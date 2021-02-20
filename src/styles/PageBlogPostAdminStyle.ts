@@ -12,18 +12,17 @@ const rotate = keyframes`
   }
 `
 
-export const ContainerUsers = styled.section`
-  max-width: 1000px;
-  margin: auto;
-  position: relative;
-`
 export const Container = styled.section`
   h2 {
     text-align: center;
     padding: 10px;
   }
 `
-
+export const ContainerBlogPost = styled.section`
+  max-width: 1000px;
+  margin: auto;
+  position: relative;
+`
 export const Button = styled.button`
   border: none;
   position: fixed;
@@ -37,6 +36,7 @@ export const Button = styled.button`
   animation: ${rotate} 1.5s infinite;
   & svg {
     color: #fff;
+    font-size: 25px;
   }
   &:hover {
     opacity: 0.8;

@@ -23,12 +23,12 @@ export const CPNavbarAdmin = (): JSX.Element => {
       <ContainerNav>
         <ul>
           <li>
-            <Link href="/">
+            <Link href="/Admin/Blog">
               <a>Blogs</a>
             </Link>
           </li>
           <li>
-            <Link href="/">
+            <Link href="/Admin/Usuarios">
               <a>Usuarios</a>
             </Link>
           </li>

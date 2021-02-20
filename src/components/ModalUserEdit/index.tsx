@@ -6,8 +6,17 @@ import { Container, Button, AlertMessage } from './styles'
 export const CPModalUserEdit: React.FC<{
   showModal: boolean
   onClose: () => void
+  HookUpdateUserAsync: (FormData: any) => Promise<boolean>
+  HookGetUsersAsync: () => void
   JsonDataUser: any
-}> = ({ showModal, onClose, JsonDataUser }): JSX.Element => {
+}> = ({
+  showModal,
+  onClose,
+  JsonDataUser,
+  HookUpdateUserAsync,
+  HookGetUsersAsync
+}): JSX.Element => {
+  const [strId, setStrId] = useState('')
   const [strNames, setStrNames] = useState('')
   const [strEmail, setStrEmail] = useState('')
   const [strPassword, setStrPassword] = useState('')
@@ -26,6 +35,7 @@ export const CPModalUserEdit: React.FC<{
   useEffect(() => {
     const InitialDataAsync = () => {
       if (JsonDataUser.length !== 0) {
+        setStrId(JsonDataUser[0]._id)
         setStrNames(JsonDataUser[0].strNames)
         setStrEmail(JsonDataUser[0].strEmail)
         setStrPassword(JsonDataUser[0].strPassword)
@@ -39,7 +49,30 @@ export const CPModalUserEdit: React.FC<{
   // -----------
   // EDITAR USER
   // -----------
-  const UpdateUserAsync = async () => {}
+  const UpdateUserAsync = async () => {
+    if (!ValidateData()) {
+      return
+    }
+    const Result = await HookUpdateUserAsync({
+      _id: strId,
+      strNames,
+      strEmail,
+      strPassword,
+      strPhone,
+      strTypeUser
+    })
+    if (Result) {
+      setJsonMessage({
+        display: true,
+        text: 'Usuario editado con éxito.',
+        Type: 'Success'
+      })
+      await HookGetUsersAsync()
+      setTimeout(() => {
+        ClearData()
+      }, 2000)
+    }
+  }
 
   // ---------------
   // VALIDAR DATA
@@ -168,7 +201,7 @@ export const CPModalUserEdit: React.FC<{
               >
                 {JsonMessage.text}
               </AlertMessage>
-              <Button>Editar</Button>
+              <Button onClick={UpdateUserAsync}>Editar</Button>
             </div>
           </Container>
         </Modal.Body>

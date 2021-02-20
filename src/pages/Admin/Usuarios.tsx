@@ -18,6 +18,8 @@ const PageAdmin = (): JSX.Element => {
     HookValidateEmailUserAsync,
     HookGetUsersAsync,
     HookGetUserAsync,
+    HookUpdateUserAsync,
+    HookDeleteUserAsync,
     JsonDataUsers,
     JsonDataUser
   } = useUser()
@@ -35,6 +37,7 @@ const PageAdmin = (): JSX.Element => {
         <CPDetailUsersAdmin
           JsonDataUsers={JsonDataUsers}
           HookGetUserAsync={HookGetUserAsync}
+          HookDeleteUserAsync={HookDeleteUserAsync}
           onClose={() => {
             setShowModalEdit(!showModal)
           }}
@@ -58,6 +61,8 @@ const PageAdmin = (): JSX.Element => {
           setShowModalEdit(!showModalEdit)
         }}
         JsonDataUser={JsonDataUser}
+        HookUpdateUserAsync={HookUpdateUserAsync}
+        HookGetUsersAsync={HookGetUsersAsync}
       />
     </Container>
   )

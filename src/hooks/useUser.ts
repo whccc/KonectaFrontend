@@ -19,6 +19,8 @@ const useUser = (): {
   }) => Promise<boolean>
   HookGetUsersAsync: () => void
   HookGetUserAsync: ({ _id: string }) => void
+  HookUpdateUserAsync: (FormData: any) => Promise<boolean>
+  HookDeleteUserAsync: ({ _id: string }) => Promise<boolean>
   JsonDataUsers: any
   JsonDataUser: any
 } => {
@@ -94,12 +96,38 @@ const useUser = (): {
       setJsonDataUser([])
     }
   }
+  // ---------------
+  // CREAR USUARIO
+  // ---------------
+  const HookUpdateUserAsync = async (DataForm: any) => {
+    try {
+      const Data = await axios.post(`${URL_API}/user/updateuser`, DataForm)
+      return Data.data.Success
+    } catch (Error) {
+      return null
+    }
+  }
+  // ---------------
+  // ELIMINAR USUARIO
+  // ---------------
+  const HookDeleteUserAsync = async ({ _id }) => {
+    try {
+      await axios.delete(`${URL_API}/user/deleteuser`, {
+        data: { _id }
+      })
+      await HookGetUsersAsync()
+    } catch (Error) {
+      return null
+    }
+  }
   return {
     HookCreateUserAsync,
     HookValidateEmailUserAsync,
     HookLoginUserAsync,
     HookGetUsersAsync,
     HookGetUserAsync,
+    HookUpdateUserAsync,
+    HookDeleteUserAsync,
     JsonDataUsers,
     JsonDataUser
   }

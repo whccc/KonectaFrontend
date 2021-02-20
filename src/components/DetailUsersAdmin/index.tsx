@@ -1,12 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Table from 'react-bootstrap/Table'
-import { Container } from './styles'
+import { Container, Button } from './styles'
 import { FaEdit, FaWindowClose } from 'react-icons/fa'
+import Modal from 'react-bootstrap/Modal'
 export const CPDetailUsersAdmin: React.FC<{
   JsonDataUsers: any
   HookGetUserAsync: ({ _id: string }) => void
+  HookDeleteUserAsync: ({ _id: string }) => Promise<boolean>
   onClose: () => void
-}> = ({ JsonDataUsers, HookGetUserAsync, onClose }): JSX.Element => {
+}> = ({
+  JsonDataUsers,
+  HookGetUserAsync,
+  onClose,
+  HookDeleteUserAsync
+}): JSX.Element => {
+  const [showModal, setShowModal] = useState(false)
+  const [DataUserDelete, setDataUserDelete] = useState({
+    _id: '',
+    strNames: ''
+  })
   // ---------
   // GET USER
   // ---------
@@ -14,7 +26,25 @@ export const CPDetailUsersAdmin: React.FC<{
     await HookGetUserAsync({ _id })
     onClose()
   }
-
+  // ------------------------------
+  // DATA INICIAL ELIMINAR USUARIO
+  // ------------------------------
+  const DataInitialDeleteUserAsync = async ({ _id, strNames }) => {
+    setDataUserDelete({
+      _id,
+      strNames
+    })
+    setShowModal(!showModal)
+  }
+  // --------------------
+  // ELIMINAR USUARIO
+  // --------------------
+  const DeleteUserAsync = async () => {
+    await HookDeleteUserAsync({ _id: DataUserDelete._id })
+    setTimeout(() => {
+      setShowModal(!showModal)
+    }, 1000)
+  }
   return (
     <Container>
       <Table striped bordered hover responsive>
@@ -51,13 +81,42 @@ export const CPDetailUsersAdmin: React.FC<{
                       GetUserEditAsync(User._id)
                     }}
                   />
-                  <FaWindowClose />
+                  <FaWindowClose
+                    onClick={() => {
+                      DataInitialDeleteUserAsync({
+                        _id: User._id,
+                        strNames: User.strNames
+                      })
+                    }}
+                  />
                 </td>
               </tr>
             )
           })}
         </tbody>
       </Table>
+      <Modal
+        show={showModal}
+        onHide={() => {
+          setShowModal(!showModal)
+        }}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Eliminar usuario</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          ¿ Desea eliminar el usuario {DataUserDelete.strNames} ?
+          <hr />
+          <Button onClick={DeleteUserAsync}>Si</Button>{' '}
+          <Button
+            onClick={() => {
+              setShowModal(!showModal)
+            }}
+          >
+            No
+          </Button>
+        </Modal.Body>
+      </Modal>
     </Container>
   )
 }
