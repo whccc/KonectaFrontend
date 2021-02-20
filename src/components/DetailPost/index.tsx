@@ -78,7 +78,7 @@ export const CPDetailPost: React.FC<{
     <Container className="animate__animated animate__fadeIn">
       <ContainerDataPost>
         <h2>{JsonDataBlogPost.strTitle}</h2>
-        <h3>Categoria:{DeterminateCategory(JsonDataBlogPost.strIdCategory)}</h3>
+        <h3>Categoria: {JsonDataBlogPost.strIdCategory}</h3>
         <small>
           Publicado:{' '}
           {JsonDataBlogPost.dtDateCreation !== undefined &&

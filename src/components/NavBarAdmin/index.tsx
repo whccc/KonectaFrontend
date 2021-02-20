@@ -74,6 +74,21 @@ export const CPNavbarAdmin = (): JSX.Element => {
               </a>
             </Link>
           </li>
+          <li
+            style={{
+              background: router.pathname === '/Admin/Categorias' && '#b53441'
+            }}
+          >
+            <Link href="/Admin/Categorias">
+              <a
+                style={{
+                  color: router.pathname === '/Admin/Categorias' && '#ffff'
+                }}
+              >
+                Administrar Categorias
+              </a>
+            </Link>
+          </li>
           <li>
             <Link href="/">
               <a>Ir al blog</a>

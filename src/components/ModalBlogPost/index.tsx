@@ -18,13 +18,15 @@ export const CPModalBlog: React.FC<{
   JsonDataBlogPost: any
   HookCreatePostAsync: (FormData: any) => Promise<boolean>
   HookUpdateBlogPostAsync: (FormData: any) => Promise<boolean>
+  JsonDataCategories: any
 }> = ({
   ShowModal,
   onShowModal,
   HookCreatePostAsync,
   JsonDataBlogPost,
   strTypeModal,
-  HookUpdateBlogPostAsync
+  HookUpdateBlogPostAsync,
+  JsonDataCategories
 }) => {
   const [strId, setId] = useState('')
   const [blobImg, setBlobImg] = useState<any>(null)
@@ -212,11 +214,13 @@ export const CPModalBlog: React.FC<{
               value={strIdCategory}
               onChange={e => setStrIdCategory(e.target.value)}
             >
-              <option value="DP">Deporte</option>
-              <option value="ED">Educación</option>
-              <option value="CL">Cultura</option>
-              <option value="CC">Ciencia</option>
-              <option value="GT">Gastronomía</option>
+              {JsonDataCategories.map((Category, Index) => {
+                return (
+                  <option value={Category.strName} key={Index}>
+                    {Category.strName}
+                  </option>
+                )
+              })}
             </Form.Control>
             <Form.Label>Texto corto</Form.Label>
             <Form.Control

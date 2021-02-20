@@ -10,6 +10,7 @@ import {
 import { CPDetailBlogPostAdmin } from '../../components/DetailBlogPostAdmin'
 import useBlogPost from '../../hooks/useBlogPost'
 import useLocalStorage from '../../hooks/useLocalStorage'
+import useCategory from '../../hooks/useCategory'
 import { useRouter } from 'next/router'
 
 const PageBlog = (): JSX.Element => {
@@ -23,6 +24,7 @@ const PageBlog = (): JSX.Element => {
     HookUpdateBlogPostAsync,
     HookDeleteBlogPostAsync
   } = useBlogPost()
+  const { HookGetCategoriesAsync, JsonDataCategories } = useCategory()
   const [strTypeModal, setStrTypeModal] = useState('PublicPost')
 
   const { HookGetDataSession } = useLocalStorage()
@@ -30,6 +32,7 @@ const PageBlog = (): JSX.Element => {
   useEffect(() => {
     const InitialDataAsync = async () => {
       await HookGetBlogPostAsync()
+      await HookGetCategoriesAsync()
     }
     InitialDataAsync()
   }, [])
@@ -71,6 +74,7 @@ const PageBlog = (): JSX.Element => {
         HookCreatePostAsync={HookCreatePostAsync}
         JsonDataBlogPost={JsonDataBlogPost}
         HookUpdateBlogPostAsync={HookUpdateBlogPostAsync}
+        JsonDataCategories={JsonDataCategories}
       />
       <Button
         onClick={() => {

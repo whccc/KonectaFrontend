@@ -25,8 +25,8 @@ export const CPDetailBlogPostAdmin: React.FC<{
   // GET ONE BLOGPOST
   // ------------------
   const GetBlogPostOneAsync = async _id => {
-    await HookGetBlogPostOneAsync({ _id })
     onChangeTypeModalPost()
+    await HookGetBlogPostOneAsync({ _id })
   }
   // ------------------------
   // MODAL DELETE BLOG POST
@@ -70,7 +70,7 @@ export const CPDetailBlogPostAdmin: React.FC<{
                   <img src={BlogPost.blobImg} />
                 </td>
                 <td>{BlogPost.strTitle}</td>
-                <td>{DeterminateCategory(BlogPost.strIdCategory)}</td>
+                <td>{BlogPost.strIdCategory}</td>
                 <td>{BlogPost.strTextSmall}</td>
                 <td>{BlogPost.dtDateCreate.split('CET')[0]}</td>
                 <td>

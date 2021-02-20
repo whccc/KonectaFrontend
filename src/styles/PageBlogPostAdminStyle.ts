@@ -13,8 +13,9 @@ const rotate = keyframes`
 `
 
 export const Container = styled.section`
-  h2 {
+  & > h2 {
     text-align: center;
+    padding: 10px;
   }
 `
 export const ContainerBlogPost = styled.section`

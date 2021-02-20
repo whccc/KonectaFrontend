@@ -8,14 +8,19 @@ export const CPCardPost: React.FC<{
   strTitle: string
   strTextSmall: string
   blobImg: string
-}> = ({ _id, strTitle, strTextSmall, blobImg }): JSX.Element => {
+  strCategory: string
+}> = ({ _id, strTitle, strTextSmall, blobImg, strCategory }): JSX.Element => {
   const router = useRouter()
   return (
     <Container>
       <Card>
         <Card.Img variant="top" src={blobImg} />
         <Card.Body>
-          <Card.Title>{strTitle}</Card.Title>
+          <Card.Title>
+            {strTitle}
+            <br />
+            <small>Categoría: {strCategory}</small>
+          </Card.Title>
           <Card.Text>{strTextSmall}</Card.Text>
           <Link
             as={`/BlogPost/${strTitle.replaceAll(' ', '-')}`}

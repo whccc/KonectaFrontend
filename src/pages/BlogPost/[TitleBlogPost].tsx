@@ -14,7 +14,7 @@ const PageDetailPost = (): JSX.Element => {
   } = useBlogPost()
   const { HookGetDataSession } = useLocalStorage()
   const router = useRouter()
-  const [DataBlogPost, setDataBlogPost] = useState({
+  const [DataBlogPost, setDataBlogPost] = useState<any>({
     _id: ''
   })
 

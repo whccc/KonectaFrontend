@@ -32,7 +32,7 @@ export const CPNavbar = (): JSX.Element => {
     <Container>
       <ContainerTitle>
         <h2>
-          {DataUser.strTypeUser === ''
+          {DataUser.strTypeUser === 'user'
             ? 'BlogKonecta'
             : 'BlogKonecta-Administrador'}
         </h2>

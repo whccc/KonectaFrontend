@@ -40,6 +40,7 @@ export default function Home(): JSX.Element {
                 strTitle={BlogPost.strTitle}
                 strTextSmall={BlogPost.strTextSmall}
                 blobImg={BlogPost.blobImg}
+                strCategory={BlogPost.strIdCategory}
               />
             )
           })}
