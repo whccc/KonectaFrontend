@@ -9,6 +9,7 @@ const useBlogPost = (): {
   HookDeleteBlogPostAsync: ({ _id: string }) => void
   HookGetBlogPostsLimitAsync: () => Promise<void>
   HookAddCommentBlogPostAsync: (DataForm: any) => Promise<boolean>
+  HookAddLikesBlogPostAsync: (DataForm: any) => Promise<boolean>
   JsonDataBlogPosts: any
   JsonDataBlogPost: any
 } => {
@@ -104,7 +105,20 @@ const useBlogPost = (): {
       return null
     }
   }
-
+  // ---------
+  // ADD LIKES
+  // ---------
+  const HookAddLikesBlogPostAsync = async (DataForm: any) => {
+    try {
+      const DataResult = await axios.put(
+        `${URL_API}/blogpost/addlike`,
+        DataForm
+      )
+      return DataResult.data.Success
+    } catch (Error) {
+      return null
+    }
+  }
   return {
     HookCreatePostAsync,
     HookGetBlogPostAsync,
@@ -113,6 +127,7 @@ const useBlogPost = (): {
     HookDeleteBlogPostAsync,
     HookGetBlogPostsLimitAsync,
     HookAddCommentBlogPostAsync,
+    HookAddLikesBlogPostAsync,
     JsonDataBlogPosts,
     JsonDataBlogPost
   }

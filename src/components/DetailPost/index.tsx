@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { CPListPost } from '../ListPost'
 import { CPPersonCommentsPost } from '../../components/PersonCommentsPost'
 import { DeterminateCategory } from '../../helpers/helper'
+import { AiOutlineLike } from 'react-icons/ai'
 import Form from 'react-bootstrap/Form'
 import {
   Container,
@@ -9,7 +10,8 @@ import {
   ContainerNewPost,
   ContainerComments,
   Button,
-  AlertMessage
+  AlertMessage,
+  ContainerLike
 } from './styles'
 import useBlogPost from '../../hooks/useBlogPost'
 export const CPDetailPost: React.FC<{
@@ -17,12 +19,14 @@ export const CPDetailPost: React.FC<{
   HookAddCommentBlogPostAsync: (DataForm: any) => Promise<boolean>
   HookGetDataSession: () => any
   HookGetBlogPostOneAsync: ({ _id: string }) => Promise<void>
+  HookAddLikesBlogPostAsync: (FormData: any) => Promise<boolean>
   DataBlogPost: any
 }> = ({
   JsonDataBlogPost,
   HookAddCommentBlogPostAsync,
   HookGetBlogPostOneAsync,
   HookGetDataSession,
+  HookAddLikesBlogPostAsync,
   DataBlogPost
 }): JSX.Element => {
   const { HookGetBlogPostsLimitAsync, JsonDataBlogPosts } = useBlogPost()
@@ -74,6 +78,18 @@ export const CPDetailPost: React.FC<{
       await HookGetBlogPostOneAsync({ _id: DataBlogPost._id })
     }, 1000)
   }
+  // ---------
+  // ADD LIKES
+  // ---------
+  const AddLikesAsync = async () => {
+    const DataForm = {
+      _id: DataBlogPost._id,
+      intLike: 18
+    }
+    await HookAddLikesBlogPostAsync(DataForm)
+
+    await HookGetBlogPostOneAsync({ _id: DataBlogPost._id })
+  }
   return (
     <Container className="animate__animated animate__fadeIn">
       <ContainerDataPost>
@@ -85,6 +101,10 @@ export const CPDetailPost: React.FC<{
             JsonDataBlogPost.dtDateCreation.split('CET')[0]}
         </small>
         <img src={JsonDataBlogPost.blobImg} style={{ width: '100%' }} />
+        <ContainerLike>
+          <AiOutlineLike onClick={AddLikesAsync} />
+          <small>{JsonDataBlogPost.intContadorLikes}</small>
+        </ContainerLike>
         <p>{JsonDataBlogPost.strTextSmall}</p>
         <p>{JsonDataBlogPost.strTextLarge}</p>
         <hr />

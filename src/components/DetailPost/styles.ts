@@ -27,7 +27,22 @@ export const ContainerNewPost = styled.div`
     margin-top: 50px;
   }
 `
-
+export const ContainerLike = styled.div`
+  display: flex;
+  flex-direction: row;
+  & svg {
+    font-size: 30px;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  small {
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+  }
+  cursor: pointer;
+`
 export const ContainerComments = styled.div`
   & textarea {
     resize: none;

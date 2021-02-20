@@ -10,7 +10,8 @@ const PageDetailPost = (): JSX.Element => {
   const {
     JsonDataBlogPost,
     HookGetBlogPostOneAsync,
-    HookAddCommentBlogPostAsync
+    HookAddCommentBlogPostAsync,
+    HookAddLikesBlogPostAsync
   } = useBlogPost()
   const { HookGetDataSession } = useLocalStorage()
   const router = useRouter()
@@ -55,6 +56,7 @@ const PageDetailPost = (): JSX.Element => {
             HookGetDataSession={HookGetDataSession}
             HookGetBlogPostOneAsync={HookGetBlogPostOneAsync}
             DataBlogPost={DataBlogPost}
+            HookAddLikesBlogPostAsync={HookAddLikesBlogPostAsync}
           />
         )}
       </Container>
